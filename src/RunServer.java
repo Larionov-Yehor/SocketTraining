@@ -1,7 +1,11 @@
+import Calendar.HtmlCalendar;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLDecoder;
 
 
 /**
@@ -14,6 +18,10 @@ public class RunServer {
             "}</style>" +  "</head>" + "<html><body>";
 
     public static String endOfHtmlFile = "</body>\n</html>\n";
+
+    public static String greaterLink = "<a href=\"greater\">greater</a>   ";
+
+    public static String calendarLink = "<a href=\"calendar\">calendar</a>";
 
 
     public static void main(String[] args) {
@@ -30,12 +38,37 @@ public class RunServer {
 
                 String incomingLink = bufferedReader.readLine().split(" ")[1];
 
-                if(incomingLink.equals("/")){
+                System.out.println(incomingLink);
+
+                if(incomingLink.equals("/")) {
+
                     stringBuilder.append(getHtmlPageContent());
+                    stringBuilder.append(greaterLink);
+                    stringBuilder.append(calendarLink);
+                    }
+
+                if(incomingLink.equals("/greater")){
+
+                    incomingLink = bufferedReader.readLine().split(" ")[1];
+                    stringBuilder.append(getHtmlGreaterPageContent());
+
                 }
-                else {
+
+                if(incomingLink.contains("name")){
+                    stringBuilder.append(getHtmlGreaterPageContent());
                     stringBuilder.append(parseTheLink(incomingLink));
                 }
+
+                if(incomingLink.equals("/calendar")){
+
+                 incomingLink = bufferedReader.readLine().split(" ")[1];
+
+                    stringBuilder.append(getHtmlCalendarPageContent());
+
+                    HtmlCalendar htmlCalendar = new HtmlCalendar();
+                   stringBuilder.append(htmlCalendar.returnCalendarTable());
+                }
+
 
                 stringBuilder.append(endOfHtmlFile);
                 socket.getOutputStream().write(stringBuilder.toString().getBytes("UTF-8"));
@@ -43,34 +76,52 @@ public class RunServer {
             }
 
 
-
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public static  String getHtmlPageContent(){
+    public static  String getHtmlGreaterPageContent(){
 
         return
-                "<form action=\"/\">" +
+                "<form action=\"/greater\">" +
                 "<input type=\"text\" name=\"name\" placeholder=\"Enter your name\"/>" +
                 "<input type=\"submit\" value=\"great\"></form> "
-           //      "<input type=\"submit\" value=\"view calendar\" onclick=\"window.location='calendar/';\" /> "
+
                 ;
     }
 
+
+    public static  String getHtmlPageContent(){
+
+        return
+                "<form action=\"/\">" ;
+    }
+
+    public static  String getHtmlCalendarPageContent(){
+
+        return
+                "<form action=\"/calendar\">" ;
+    }
+
     public static String parseTheLink(String link){
+
         String result = null;
         if(link.contains("name")) {
 
             String[] partsOfLink = link.split("=");
             try {
-                result = partsOfLink[1];
+                String name = null;
+                name = partsOfLink[1];
+                result = URLDecoder.decode(name, "UTF-8");
+
+
             } catch (ArrayIndexOutOfBoundsException e) {
                 return "Hello Mr. Incognito";
             }
+            catch (UnsupportedEncodingException e){}
         }
-            return result;
+            return "Hello Mr."+result;
 
 
     }
