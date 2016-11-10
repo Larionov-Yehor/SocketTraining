@@ -26,7 +26,6 @@ public class Parser {
         }
         return "Hello Mr." + result;
 
-
     }
 
 }
