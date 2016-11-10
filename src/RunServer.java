@@ -115,7 +115,6 @@ public class RunServer {
                 name = partsOfLink[1];
                 result = URLDecoder.decode(name, "UTF-8");
 
-
             } catch (ArrayIndexOutOfBoundsException e) {
                 return "Hello Mr. Incognito";
             }
