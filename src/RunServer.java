@@ -13,9 +13,9 @@ import java.net.URLDecoder;
  */
 public class RunServer {
     public static String startOfHtmlFile = "<!DOCTYPE html>\n" +
-            "<head><style>td.weekend {\n" + "    color: red;\n" +  "}\n" +  "\n" +"td.currentDay {\n" +    "    color: cyan;\n" +
-            "}\n" +  "td.anotherMonthColor {\n" +   " color: orange;\n" +  "}\n" +    "\n" +"td {\n" + "  padding: 5px;\n" +
-            "}</style>" +  "</head>" + "<html><body>";
+            "<head><style>td.weekend {\n" + "    color: red;\n" + "}\n" + "\n" + "td.currentDay {\n" + "    color: cyan;\n" +
+            "}\n" + "td.anotherMonthColor {\n" + " color: orange;\n" + "}\n" + "\n" + "td {\n" + "  padding: 5px;\n" +
+            "}</style>" + "</head>" + "<html><body>";
 
     public static String endOfHtmlFile = "</body>\n</html>\n";
 
@@ -29,85 +29,53 @@ public class RunServer {
         try {
             ServerSocket server = new ServerSocket(5555);
             System.out.println("Server is on");
-            while (true){
+
+            while (true) {
+
                 Socket socket = server.accept();
+
                 StringBuilder stringBuilder = new StringBuilder();
+
                 stringBuilder.append(startOfHtmlFile);
 
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                String incomingLink = bufferedReader.readLine().split(" ")[1];
-
-                System.out.println(incomingLink);
-
-                if(incomingLink.equals("/")) {
-
-                    stringBuilder.append(getHtmlPageContent());
-                    stringBuilder.append(greaterLink);
-                    stringBuilder.append(calendarLink);
-                    }
-
-                if(incomingLink.equals("/greater")){
-
-                    incomingLink = bufferedReader.readLine().split(" ")[1];
-                    stringBuilder.append(getHtmlGreaterPageContent());
-
-                }
-
-                if(incomingLink.contains("name")){
-                    stringBuilder.append(getHtmlGreaterPageContent());
-                    stringBuilder.append(parseTheLink(incomingLink));
-                }
-
-                if(incomingLink.equals("/calendar")){
-
-                 incomingLink = bufferedReader.readLine().split(" ")[1];
-
-                    stringBuilder.append(getHtmlCalendarPageContent());
-
-                    HtmlCalendar htmlCalendar = new HtmlCalendar();
-                   stringBuilder.append(htmlCalendar.returnCalendarTable());
-                }
+                String path = bufferedReader.readLine().split(" ")[1];
 
 
                 stringBuilder.append(endOfHtmlFile);
+
                 socket.getOutputStream().write(stringBuilder.toString().getBytes("UTF-8"));
+
                 bufferedReader.close();
             }
 
 
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public static  String getHtmlGreaterPageContent(){
-
-        return
-                "<form action=\"/greater\">" +
-                "<input type=\"text\" name=\"name\" placeholder=\"Enter your name\"/>" +
-                "<input type=\"submit\" value=\"great\"></form> "
-
-                ;
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
 
-    public static  String getHtmlPageContent(){
 
-        return
-                "<form action=\"/\">" ;
+    public static String getHtmlGreaterPageContent() {
+        return "<form action=\"/greater\">" +
+               "<input type=\"text\" name=\"name\" placeholder=\"Enter your name\"/>" +
+               "<input type=\"submit\" value=\"great\"></form> ";
     }
 
-    public static  String getHtmlCalendarPageContent(){
 
-        return
-                "<form action=\"/calendar\">" ;
+    public static String getHtmlPageContent() {
+        return   "<form action=\"/\">";
     }
 
-    public static String parseTheLink(String link){
+    public static String getHtmlCalendarPageContent() {
+        return   "<form action=\"/calendar\">";
+    }
+
+    public static String parseLink(String link) {
 
         String result = null;
-        if(link.contains("name")) {
+
+        if (link.contains("name")) {
 
             String[] partsOfLink = link.split("=");
             try {
@@ -116,11 +84,12 @@ public class RunServer {
                 result = URLDecoder.decode(name, "UTF-8");
 
             } catch (ArrayIndexOutOfBoundsException e) {
-                return "Hello Mr. Incognito";
+              return "Hello Mr. Incognito";
+
+            } catch (UnsupportedEncodingException e) {
             }
-            catch (UnsupportedEncodingException e){}
         }
-            return "Hello Mr."+result;
+        return "Hello Mr." + result;
 
 
     }
