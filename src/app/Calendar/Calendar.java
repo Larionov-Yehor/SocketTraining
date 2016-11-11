@@ -1,14 +1,11 @@
-package Calendar;
+package app.Calendar;
 
 /**
  * Created by employee on 11/10/16.
  */
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.time.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 

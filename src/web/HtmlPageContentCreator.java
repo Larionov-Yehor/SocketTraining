@@ -1,4 +1,6 @@
-import Calendar.HtmlCalendar;
+package web;
+
+import app.Calendar.HtmlCalendar;
 
 /**
  * Created by employee on 11/10/16.
@@ -36,7 +38,7 @@ public class HtmlPageContentCreator {
 
         if (PathReader.isNamePagePath(path)) {
             stringBuilder.append(getHtmlGreaterPageContent());
-            stringBuilder.append(Parser.parseName((path)));
+            stringBuilder.append(ParserOld.parseName((path)));
         }
 
         if (PathReader.isCalendarPagePath(path)) {
@@ -48,8 +50,6 @@ public class HtmlPageContentCreator {
 
         return stringBuilder.toString();
     }
-
-
 
 
     public static String getHtmlPageContent() {

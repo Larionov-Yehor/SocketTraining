@@ -1,10 +1,12 @@
+package web;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 /**
  * Created by employee on 11/10/16.
  */
-public class Parser {
+public class ParserOld {
 
     public static String parseName(String path) {
 

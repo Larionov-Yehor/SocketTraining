@@ -1,4 +1,4 @@
-package Calendar;
+package app.Calendar;
 
 /**
  * Created by employee on 11/10/16.
@@ -18,7 +18,7 @@ import java.util.Locale;
  */
 public class HtmlCalendar extends Calendar {
 
-    private static final String startOfFile = "<html> <head> <title>Calendar</title><link href=\"style.css\" rel=\"stylesheet\"></head> <body> <table><tr>";
+    private static final String startOfFile = "<html> <head> <title>app.Calendar</title><link href=\"style.css\" rel=\"stylesheet\"></head> <body> <table><tr>";
     private static final String endOfFile = "</tr></table></body></html>";
     private static final String style = " .weekend{color: #FE0000;} .currentDay {color: #00FE00;} td{ width: 30px;}";
 
@@ -124,7 +124,7 @@ public class HtmlCalendar extends Calendar {
 
     public static void writeCalendarToHTMLFileAndStyleToCSS(String htmlFileContent, String cssFileContent) {
 
-        Path pathHTML = Paths.get("/home/employee/Desktop/HTML/Calendar.html");
+        Path pathHTML = Paths.get("/home/employee/Desktop/HTML/app.Calendar.html");
         Path pathCSS = Paths.get("/home/employee/Desktop/HTML/style.css");
 
         File fileHTML = pathHTML.toFile();
